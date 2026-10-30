@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Material Request Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-stone-100 p-4 md:p-8">
+    <main class="mx-auto max-w-4xl rounded-lg border border-stone-200 bg-white p-6 md:p-8">
+      <header class="mb-8 border-b border-stone-200 pb-5">
+        <p class="text-xs font-semibold uppercase tracking-widest text-stone-500">
+          Construction Management
+        </p>
+        <h1 class="mt-2 text-2xl font-bold text-stone-900">Material Request</h1>
+        <p class="mt-1 text-sm text-stone-500">Request materials from the construction store.</p>
+
+        <div class="mt-5 flex items-center justify-between rounded-md bg-stone-50 px-4 py-3">
+          <span class="text-sm text-stone-600">Request Date</span>
+          <time id="request-date" class="text-sm font-semibold text-stone-800"></time>
+        </div>
+      </header>
+
+      <!-- FORM -->
+      <form id="request-form" class="space-y-8">
+        <!-- Request Information -->
+        <section>
+          <h2 class="mb-4 text-base font-semibold text-stone-900">Request Information</h2>
+
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div class="flex gap-1">
+              <label for="building" class="mb-2 block text-sm font-medium text-stone-700">
+                Building Block
+              </label>
+              <select
+                id="dropdown_buildings_btn"
+                name="building_id"
+                required
+                class="w-full rounded-md border border-stone-300 bg-white px-3 py-2.5 text-sm focus:border-stone-600 focus:outline-none"
+              >
+                <option value="">Select building</option>
+                <option value="1">Block A</option>
+                <option value="2">Block B</option>
+                <option value="3">Block C</option>
+              </select>
+              <button
+                id="fetchBlockbtn"
+                type="button"
+                class="bg-green-400 hover:bg-green-500 active:scale-95 px-1"
+              >
+                ⬇️
+              </button>
+            </div>
+
+            <div class="flex gap-1">
+              <label for="engineer" class="mb-2 block text-sm font-medium text-stone-700">
+                Requested By (Engineer)
+              </label>
+              <select
+                id="dropdown_engineers_btn"
+                name="engineer_id"
+                required
+                class="w-full rounded-md border border-stone-300 bg-white px-3 py-2.5 text-sm focus:border-stone-600 focus:outline-none"
+              >
+                <option value="">Select engineer</option>
+                <option value="1">Engineer Hana</option>
+                <option value="2">Engineer Michael</option>
+              </select>
+              <button
+                id="fetchEngineerbtn"
+                type="button"
+                class="bg-green-400 hover:bg-green-500 active:scale-95 p-1"
+              >
+                ⬇️
+              </button>
+            </div>
+
+            <div>
+              <label for="date-needed" class="mb-2 block text-sm font-medium text-stone-700">
+                Date Needed
+              </label>
+              <input
+                type="date"
+                id="date-needed"
+                name="required_date"
+                required
+                class="w-full rounded-md border border-stone-300 px-3 py-2.5 text-sm focus:border-stone-600 focus:outline-none"
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- Materials -->
+        <section>
+          <div class="mb-4 flex items-center justify-between">
+            <h2 class="text-base font-semibold text-stone-900">Materials Requested</h2>
+            <button
+              type="button"
+              id="add-material"
+              class="rounded-md border border-stone-300 px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
+            >
+              + Add Material
+            </button>
+          </div>
+
+          <div class="overflow-x-auto rounded-md border border-stone-200">
+            <table class="w-full min-w-[600px] text-left text-sm">
+              <thead class="bg-stone-50 text-stone-600">
+                <tr>
+                  <th class="px-3 py-3 font-medium">Material</th>
+                  <th class="px-3 py-3 font-medium">Quantity</th>
+                  <th class="px-3 py-3 font-medium">Unit</th>
+                  <th class="px-3 py-3 font-medium">Action</th>
+                </tr>
+              </thead>
+
+              <tbody id="material-rows">
+                <tr class="border-t border-stone-200">
+                  <td class="px-3 py-3 flex gap-1">
+                    <select
+                      id="dropdown_materials_btn"
+                      name="material_id[]"
+                      required
+                      class="w-full rounded-md border border-stone-300 bg-white px-2 py-2"
+                    >
+                      <option value="">Select material</option>
+                      <option value="1">Cement</option>
+                      <option value="2">Sand</option>
+                      <option value="3">Steel Bar</option>
+                      <option value="4">Bricks</option>
+                    </select>
+                    <button
+                      id="fetchMaterialbtn"
+                      type="button"
+                      class="bg-green-400 hover:bg-green-500 active:scale-95 px-1"
+                    >
+                      ⬇️
+                    </button>
+                  </td>
+                  <td class="px-3 py-3">
+                    <input
+                      type="number"
+                      name="quantity[]"
+                      min="0.01"
+                      step="any"
+                      placeholder="0"
+                      required
+                      class="w-24 rounded-md border border-stone-300 px-2 py-2"
+                    />
+                  </td>
+                  <td class="px-3 py-3">
+                    <select
+                      name="unit[]"
+                      required
+                      class="w-full rounded-md border border-stone-300 bg-white px-2 py-2"
+                    >
+                      <option value="">Select unit</option>
+                      <option value="bags">Bags</option>
+                      <option value="pieces">Pieces</option>
+                      <option value="kg">Kg</option>
+                      <option value="m">Meters</option>
+                      <option value="m3">m³</option>
+                      <option value="liters">Liters</option>
+                    </select>
+                  </td>
+                  <td class="px-3 py-3 text-stone-400">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Remark -->
+        <section>
+          <label for="remark" class="mb-2 block text-base font-semibold text-stone-900">
+            Remark
+          </label>
+          <textarea
+            id="remark"
+            name="remark"
+            rows="3"
+            placeholder="Reason for request or additional details..."
+            class="w-full rounded-md border border-stone-300 px-3 py-3 text-sm focus:border-stone-600 focus:outline-none"
+          ></textarea>
+        </section>
+
+        <!-- Approval -->
+        <section>
+          <h2 class="mb-4 text-base font-semibold text-stone-900">Authorization</h2>
+
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label for="requested-by" class="mb-2 block text-sm font-medium text-stone-700">
+                Requested By
+              </label>
+              <input
+                type="text"
+                id="requested-by"
+                name="requested_by"
+                placeholder="Engineer name"
+                class="w-full rounded-md border border-stone-300 bg-stone-50 px-3 py-2.5 text-sm"
+              />
+            </div>
+
+            <div>
+              <label for="approved-by" class="mb-2 block text-sm font-medium text-stone-700">
+                Approved By (Head)
+              </label>
+              <input
+                type="text"
+                id="approved-by"
+                name="approved_by"
+                placeholder="Head's name"
+                class="w-full rounded-md border border-stone-300 px-3 py-2.5 text-sm"
+              />
+            </div>
+
+            <div>
+              <label for="issued-by" class="mb-2 block text-sm font-medium text-stone-700">
+                Issued By (Storekeeper)
+              </label>
+              <input
+                type="text"
+                id="issued-by"
+                name="issued_by"
+                placeholder="Storekeeper name"
+                class="w-full rounded-md border border-stone-300 px-3 py-2.5 text-sm"
+              />
+            </div>
+
+            <div>
+              <label for="received-by" class="mb-2 block text-sm font-medium text-stone-700">
+                Received By
+              </label>
+              <input
+                type="text"
+                id="received-by"
+                name="received_by"
+                placeholder="Receiver's name"
+                class="w-full rounded-md border border-stone-300 px-3 py-2.5 text-sm"
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- Actions -->
+        <div
+          class="flex flex-col-reverse gap-3 border-t border-stone-200 pt-5 sm:flex-row sm:justify-end"
+        >
+          <button
+            type="reset"
+            class="rounded-md border border-stone-300 px-5 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-50"
+          >
+            Clear Form
+          </button>
+          <button
+            type="submit"
+            class="rounded-md bg-stone-800 px-6 py-2.5 text-sm font-semibold text-white hover:bg-stone-700"
+          >
+            Submit Request
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
